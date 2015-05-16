@@ -35,11 +35,13 @@ class Game(object):
             for event in pygame.event.get():
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                     self.gamestate = 0
-
+            self.player.walk = False
             keys = pygame.key.get_pressed()
             if keys[K_LEFT]:
                 self.player.rect.left -= 5
+                self.player.walk = True
             if keys[K_RIGHT]:
+                self.player.walk = True
                 self.player.rect.left += 5
 
 
