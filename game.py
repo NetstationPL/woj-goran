@@ -18,6 +18,7 @@ class Game(object):
         self.player.rect.bottom = screen_size[1] - 128 + 20
         self.players.add(self.player)
         self.clock = pygame.time.Clock()
+        self.STEP = 5
 
     def initial_background(self):
         background = pygame.Surface(self.surface.get_size())
@@ -35,14 +36,12 @@ class Game(object):
             for event in pygame.event.get():
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                     self.gamestate = 0
-            self.player.walk = False
+            self.player.walk = 0
             keys = pygame.key.get_pressed()
             if keys[K_LEFT]:
-                self.player.rect.left -= 5
-                self.player.walk = True
+                self.player.walk = self.STEP * -1
             if keys[K_RIGHT]:
-                self.player.walk = True
-                self.player.rect.left += 5
+                self.player.walk = self.STEP
 
 
             self.players.update()
