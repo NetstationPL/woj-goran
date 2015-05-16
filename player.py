@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.images = []
         for i in self.images_str:
             self.images.append(pygame.image.load(i))
-
+    
     def update(self):
         pygame.sprite.Sprite.update(self)
         if self.walk:
