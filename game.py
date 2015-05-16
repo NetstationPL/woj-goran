@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *  # noqa
 
+from player import Player
+
 screen_size = (1024, 798)
 
 
@@ -11,6 +13,10 @@ class Game(object):
         self.surface = pygame.display.set_mode(screen_size, pygame.HWSURFACE)
         self.gamestate = 1
         self.initial_background()
+        self.players = pygame.sprite.RenderUpdates()
+        self.player = Player()
+        self.player.rect.bottom = screen_size[1] - 128 + 20
+        self.players.add(self.player)
 
     def initial_background(self):
         background = pygame.Surface(self.surface.get_size())
@@ -22,14 +28,15 @@ class Game(object):
         for i in range(0, 1024, 128):
             self.surface.blit(image, (i, 798 - 128))
 
-        pygame.display.flip()
 
     def main(self):
         while self.gamestate == 1:
             for event in pygame.event.get():
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                     self.gamestate = 0
-
-
+            self.players.update()
+            self.players.draw(self.surface)
+            
+            pygame.display.flip()
 if __name__ == "__main__":
     Game().main()
