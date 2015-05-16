@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import pygame
+import pymunk
 
 
 class Player(pygame.sprite.Sprite):
@@ -20,6 +22,8 @@ class Player(pygame.sprite.Sprite):
         self.frames_count = 0
         self.CHANGE_ANIM_AFTER_STEPS = 5
         self.direction = 1
+        self.body.pymunk.Body(30, pymunk.moment_for_box(50, 100, 128))
+        self.body.position = (self.rect.centerx, self.rect.centery)
 
     def update(self):
         pygame.sprite.Sprite.update(self)
@@ -45,3 +49,5 @@ class Player(pygame.sprite.Sprite):
         if self.direction == -1:
             self.image = pygame.transform.flip(self.image, True, False)
         self.rect.x += self.walk
+
+        self.rect.centery = self.body.position[1]
