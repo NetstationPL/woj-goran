@@ -11,7 +11,7 @@ screen_size = (1280, 720)
 def create_line(space):
     body = pymunk.Body()
     body.position = (0, screen_size[1])
-    line_shape = pymunk.Segment(body, (0, -0), (screen_size[0], 0), 128)
+    line_shape = pymunk.Segment(body, (0, -0), (screen_size[0], 0), 64)
     line_shape.elasticity = 0.5
     line_shape.collision_type = 2
     space.add(line_shape)
@@ -29,7 +29,6 @@ class Game(object):
         self.initial_background()
         self.players = pygame.sprite.RenderUpdates()
         self.player = Player()
-        self.player.rect.bottom = screen_size[1] - 128 + 20
         self.players.add(self.player)
         self.space.add(self.player.body, self.player.shape)
 
