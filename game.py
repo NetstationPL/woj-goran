@@ -13,6 +13,7 @@ def create_line(space):
     body.position = (0, screen_size[1])
     line_shape = pymunk.Segment(body, (0, -0), (screen_size[0], 0), 128)
     line_shape.elasticity = 0.5
+    line_shape.collision_type = 2
     space.add(line_shape)
     return line_shape
 
@@ -31,6 +32,18 @@ class Game(object):
         self.player.rect.bottom = screen_size[1] - 128 + 20
         self.players.add(self.player)
         self.space.add(self.player.body, self.player.shape)
+
+        def standing(*largs):
+            self.player.on_ground = True
+            self.player.stand()
+            return True
+
+        def flying(*largs):
+            self.player.on_ground = False
+            return True
+
+        self.space.add_collision_handler(1, 2, begin=standing, separate=flying)
+        
         self.clock = pygame.time.Clock()
         
         self.floor = create_line(self.space)

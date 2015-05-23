@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.body = pymunk.Body(30, pymunk.moment_for_box(50, 100, 128))
         self.body.position = (self.rect.centerx, 768 - self.rect.centery)
         self.shape = pymunk.Circle(self.body, 25)
+        self.shape.collision_type = 1
+        self.on_ground = True
 
     def update(self):
         pygame.sprite.Sprite.update(self)
@@ -60,20 +62,23 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottom = self.body.position[1] + 40
 
     def is_jumping(self):
-        if self.body.velocity[1] != 0:
-            return True
-        return False
+        return not self.on_ground
 
     def jump(self):
         if self.is_jumping():
             return
         self.body.apply_impulse(pymunk.vec2d.Vec2d(0, -4000))
+        if self.is_walking():
+            self.body.apply_impulse(pymunk.vec2d.Vec2d(8000 * self.direction * -1, 0))
 
     def walk(self, direction=1):
         if not self.is_jumping():
             self.body.velocity = pymunk.vec2d.Vec2d(500 * direction, 0)
 
     def is_walking(self):
-        if self.body.velocity[1] == 0 and self.body.velocity[0] != 0:
+        if not self.is_jumping() and self.body.velocity[0] != 0:
             return True
         return False
+
+    def stand(self):
+        pass
