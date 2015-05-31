@@ -53,3 +53,14 @@ class TestPlayerSprite(unittest.TestCase):
         self.sprite.frame = 1
         self.sprite.state = 1
         self.assertEqual(self.sprite.frame, 1)
+
+    def test_should_change_frame(self):
+        self.sprite.images = ((1, 2, 3),)
+        self.sprite.frame = 0
+        self.sprite.change_frame()
+        self.assertEqual(self.sprite.frame, 1)
+
+    def test_get_current_frame(self):
+        self.sprite.images = ((1, 2, 3),)
+        self.sprite.frame = 1
+        self.assertEqual(self.sprite.get_current_frame(), 2)

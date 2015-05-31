@@ -11,9 +11,6 @@ class PlayerSprite(pygame.sprite.Sprite):
                pygame.image.load("images/player_walk2.png"),
                pygame.image.load("images/player_walk3.png"),
                pygame.image.load("images/player_idle.png")]]
-    # images_str = ["images/player_idle.png", "images/player_walk1.png",
-    #               "images/player_walk2.png", "images/player_walk3.png", ]
-    # default_groups = []
 
     # STEP = 5
 
@@ -44,26 +41,12 @@ class PlayerSprite(pygame.sprite.Sprite):
         self.rect.x = body.position[0]
         self.rect.y = body.position[1]
 
-        # self.images = []
-        # for i in self.images_str:
-        #     self.images.append(pygame.image.load(i))
-
-        # self.frames_count = 0
-
-        # self.body = pymunk.Body(30, pymunk.moment_for_box(50, 1, 1))
-        # self.body.position = (self.rect.centerx, 720 - 96)
-        # self.shape = pymunk.Circle(self.body, 15, (0, 17))
-        # self.shape.collision_type = 1
-
     def update(self):
         pygame.sprite.Sprite.update(self)
 
-        self.frame += 1
+        self.change_frame()
 
-        if self.frame == len(self.images[self.state]):
-            self.frame = 0
-
-        self.image = self.images[self.state][self.frame]
+        self.image = self.get_current_frame()
 
         # if state == 1:
         #     self.frames_count += 1
@@ -96,3 +79,12 @@ class PlayerSprite(pygame.sprite.Sprite):
     #     if self.is_walking():
     #         self.body.apply_impulse(
     #             pymunk.vec2d.Vec2d(5000 * self.direction * -1, 0))
+
+    def change_frame(self):
+        self.frame += 1
+
+        if self.frame == len(self.images[self.state]):
+            self.frame = 0
+
+    def get_current_frame(self):
+        return self.images[self.state][self.frame]
