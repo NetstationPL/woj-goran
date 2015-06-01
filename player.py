@@ -47,3 +47,11 @@ class Player(object):
 
     def is_standing(self):
         return self.body.velocity[0] == 0
+
+    # def jump(self):
+    #     if self.is_jumping():
+    #         return
+    #     self.body.apply_impulse(pymunk.vec2d.Vec2d(0, -4000))
+    #     if self.is_walking():
+    #         self.body.apply_impulse(
+    #             pymunk.vec2d.Vec2d(5000 * self.direction * -1, 0))

@@ -26,7 +26,7 @@ class Game(object):
         pygame.init()
         pygame.mixer.init()
         self.space = pymunk.Space()
-        self.space.gravity = (0, 100)
+        self.space.gravity = (0, 0)
 
         self.surface = pygame.display.set_mode(screen_size, pygame.HWSURFACE)
 
