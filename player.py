@@ -30,6 +30,8 @@ class Player(object):
         self.sprite.draw()
 
     def is_jumping(self):
+        if self.body.velocity[1] == 0 and self.state == STATE_JUMP:
+            self.stand()
         return bool(self.state == STATE_JUMP)
 
     def walk(self, direction=1):
@@ -40,7 +42,6 @@ class Player(object):
         self.state = STATE_WALK
 
     def is_walking(self):
-        self.state = STATE_WALK
         return bool(self.state == STATE_WALK)
 
     def stand(self):
@@ -54,9 +55,7 @@ class Player(object):
     def jump(self):
         if self.is_jumping():
             return
-
         self.body.apply_impulse((self.body.velocity[0], -4000))
+        self.body.apply_impulse((self.body.velocity[0] * 20 * -1, 0))
         self.state = STATE_JUMP
-        # if self.is_walking():
-        #     self.body.apply_impulse(
-        #         pymunk.vec2d.Vec2d(5000 * self.direction * -1, 0))
+        self.sprite.state = STATE_IDLE

@@ -52,6 +52,15 @@ class TestPlayerSprite(unittest.TestCase):
         self.sprite.state = 1
         self.assertEqual(self.sprite.frame, 0)
 
+    def test_should_reset_frame_when_end(self):
+        self.sprite.images = ((1, 2, 3),)
+        pygame.image.load = Mock()
+
+        self.sprite.frame = 2
+        self.sprite.change_frame()
+
+        self.assertEqual(self.sprite.frame, 0)
+
     def test_shouldnt_reset_if_state_same(self):
         self.sprite.state = 1
         self.assertEqual(self.sprite.frame, 0)
@@ -59,12 +68,10 @@ class TestPlayerSprite(unittest.TestCase):
         self.sprite.state = 1
         self.assertEqual(self.sprite.frame, 1)
 
-    def test_shouldnt_reset__time_if_state_same(self):
+    def test_shouldnt_reset_time_if_state_same(self):
         self.sprite.state = 1
         ltime = self.sprite.last_frame_time
-
         self.sprite.state = 1
-
         self.assertEqual(self.sprite.last_frame_time, ltime)
 
     def test_should_change_frame(self):

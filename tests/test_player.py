@@ -79,28 +79,53 @@ class TestPlayer(unittest.TestCase):
         self.player.stand()
         self.assertEqual(self.player.sprite.state, STATE_IDLE)
 
+    def test_shouldnt_be_animation_on_jump(self):
+        self.player.sprite.state = STATE_WALK
+        self.player.jump()
+        self.assertEqual(self.player.sprite.state, STATE_IDLE)
+
     def test_should_jump(self):
         self.player.jump()
         self.assertTrue(self.player.body.apply_impulse.called)
 
     def test_should_set_is_jumping(self):
         self.player.jump()
+        self.player.velocity[1] = 100
         self.assertTrue(self.player.is_jumping())
+
+    def test_should_unset_is_jumping(self):
+        self.player.jump()
+        self.player.body.velocity[1] = 0
+        self.assertFalse(self.player.is_jumping())
 
     def test_should_not_jump_if_jumping(self):
         self.player.jump()
         self.player.body.reset_mock()
+        self.player.velocity[1] = 100
         self.player.jump()
         self.assertFalse(self.player.body.apply_impulse.called)
 
     def test_should_apply_impulse_with_walk(self):
         self.player.body.velocity[0] = 100
         self.player.jump()
-        args = self.player.body.apply_impulse.call_args
-        self.assertGreater(args[0][0][0], 0)
+        args = self.player.body.apply_impulse.call_args_list
+        self.assertGreater(args[0][0][0][0], 0)
 
     def test_shouldnt_walk_if_jumping(self):
         self.player.jump()
         vel = self.player.body.velocity[0]
         self.player.walk()
         self.assertTrue(vel >= self.player.body.velocity[0])
+
+    def test_should_slows_when_flying(self):
+        self.player.body.velocity[0] = 100
+        self.player.jump()
+        args = self.player.body.apply_impulse.call_args_list
+        self.assertLess(args[1][0][0][0], 0)
+
+    def test_should_stop_after_jump(self):
+        self.player.body.velocity = [100, 100]
+        self.player.jump()
+        self.player.body.velocity[1] = 0
+        self.player.is_jumping()
+        self.assertEqual(self.player.body.velocity[0], 0)
