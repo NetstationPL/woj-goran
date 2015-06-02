@@ -13,7 +13,7 @@ screen_size = (1280, 720)
 def create_line(space):
     body = pymunk.Body()
     body.position = (0, screen_size[1])
-    line_shape = pymunk.Segment(body, (0, -0), (screen_size[0], 0), 64)
+    line_shape = pymunk.Segment(body, (0, -0), (screen_size[0], 0), 128)
     line_shape.elasticity = 0.5
     line_shape.collision_type = 2
     space.add(line_shape)
@@ -26,7 +26,7 @@ class Game(object):
         pygame.init()
         pygame.mixer.init()
         self.space = pymunk.Space()
-        self.space.gravity = (0, 0)
+        self.space.gravity = (0, 100)
 
         self.surface = pygame.display.set_mode(screen_size, pygame.HWSURFACE)
 
@@ -84,10 +84,10 @@ class Game(object):
             if keys[K_RIGHT]:
                 self.player.walk()
                 walk = True
-            if not walk:
+            if keys[K_UP]:
+                self.player.jump()
+            if not walk and not self.player.is_jumping():
                 self.player.stand()
-            # if keys[K_UP]:
-            #     self.player.jump()
 
             self.players.update()
 
